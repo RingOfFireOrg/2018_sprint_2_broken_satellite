@@ -7,6 +7,10 @@
 #define RX_FROM_NMCU 2
 #define TX_TO_NMCU 3
 
+Servo grabber;
+int grabberpos = 90;
+
+
 // ---------------------------------------------------------------------------
 /* 
  * Create a Drive Station Interface "DS_Interface" object
@@ -56,6 +60,7 @@ void setup() {
   ds.init();     // setup drive station comms 
   flashyLight.init(); // setup the LED blinker
   drivetrain.init();  // setup the drive train to use the servos
+  grabber.attach(9);
 }
 
 /* 
@@ -67,6 +72,7 @@ void loop() {
     char input = ds.readInputIfAvailable();
     // decide if this input should trigger a change our recorded
     // state:
+    //input = 'i';
     switch (input) {
       case 'f':
         speed_state = Blinker::FAST;
@@ -94,7 +100,20 @@ void loop() {
         break;
       case 'x':
         current_direction = ServoDriveTrain::REVERSE;
+        break;      
+      case 'y':
+        grabberpos=270;
+        grabber.write(grabberpos);
         break;
+      case 'u':
+        grabberpos=0;
+        grabber.write(grabberpos);
+        break;
+      case 'i':
+        grabberpos=80;
+        grabber.write(grabberpos);
+        break;
+      
       default:
         /*
          * no reason to make changes to any state if there was
